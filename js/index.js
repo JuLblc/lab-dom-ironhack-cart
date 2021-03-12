@@ -35,22 +35,48 @@ function calculateAll() {
 // ITERATION 4
 
 function removeProduct(event) {
-  const target = event.currentTarget;
-  
-  console.log('The target in remove is:', target);
+  const target = event.currentTarget;  
   //... your code goes here
+  const toDelete = target.parentNode.parentNode
+  const toDeleteDaddy = toDelete.parentNode
+  toDeleteDaddy.removeChild(toDelete);
+  calculateAll();
 }
 
 // ITERATION 5
 
 function createProduct() {
-  //... your code goes here
+  const newProductName = document.querySelector(".create-product td:first-child input").value;
+  const newProductPrice = document.querySelector(".create-product td:nth-child(2) input").value;
+
+  const nodeCopy = document.querySelector('.product').cloneNode(true);
+  nodeCopy.querySelector('.name span').textContent = newProductName;
+  nodeCopy.querySelector('.price span').textContent = newProductPrice;
+  // console.log("copy:",nodeCopy);
+
+  const parent = document.querySelector('tbody');
+  // console.log("parent:",parent);
+
+  parent.append(nodeCopy);
+
+  rmBtnList();
+
+  // Reset input
+  document.querySelector(".create-product td:first-child input").value = "";
+  document.querySelector(".create-product td:nth-child(2) input").value = 0;
+}
+
+function rmBtnList(){
+  const removeButtons = document.querySelectorAll('.btn.btn-remove');
+  removeButtons.forEach(btn => btn.addEventListener('click', removeProduct));
 }
 
 window.addEventListener('load', () => {
   const calculatePricesBtn = document.getElementById('calculate');
   calculatePricesBtn.addEventListener('click', calculateAll);
 
-  const removeButtons = document.querySelectorAll('.btn.btn-remove');
-  removeButtons.forEach(btn => btn.addEventListener('click', removeProduct));
+  rmBtnList();
+
+  const createBtn = document.querySelector('.createbtn');
+  createBtn.addEventListener('click', createProduct);
 });
